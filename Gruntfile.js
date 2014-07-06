@@ -3,6 +3,30 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: { separator: ';'},
+      lib:{
+        src: [
+          'public/lib/underscore.js',
+          'public/lib/jquery.js',
+          'public/lib/backbone.js',
+          'public/lib/handlebars.js',
+        ],
+        dest: 'public/dist/lib.js',
+      },
+      dist: {
+        src: [
+          'public/client/*.js'
+        ],
+        dest: 'public/dist/production.js',
+      },
+      // dist: {
+      //     src: [
+      //         'js/libs/*.js', // All JS in the libs folder
+      //         'js/global.js'  // This specific file
+      //     ],
+      //     dest: 'js/build/production.js',
+      // }
+      //todod
     },
 
     mochaTest: {
@@ -21,18 +45,29 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      build:{
+        src: 'public/dist/production.js',
+        dest: 'public/dist/production.min.js'
+      },
+      lib:{
+        src: 'public/dist/lib.js',
+        dest: 'public/dist/lib.min.js',
+
+      },
     },
 
     jshint: {
       files: [
         // Add filespec list here
+        // 'public/dist/production.js'
+        'public/client/*.js'
       ],
       options: {
         force: 'true',
         jshintrc: '.jshintrc',
         ignores: [
-          'public/lib/**/*.js',
-          'public/dist/**/*.js'
+          // 'public/lib/**/*.js',
+          // 'public/dist/**/*.js'
         ]
       }
     },
@@ -43,8 +78,11 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: [
-          'public/client/**/*.js',
-          'public/lib/**/*.js',
+          'public/lib/underscore.js',
+          'public/lib/jquery.js',
+          'public/lib/backbone.js',
+          'public/lib/handlebars.js',
+          'public/client/*.js',
         ],
         tasks: [
           'concat',
@@ -89,6 +127,8 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
+
+
   grunt.registerTask('test', [
     'mochaTest'
   ]);
@@ -99,13 +139,15 @@ module.exports = function(grunt) {
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
+
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
 
-  grunt.registerTask('deploy', [
+  grunt.registerTask('deploy', ['jshint', 'test', 'upload'
     // add your deploy tasks here
+    // 'concat', 'uglify'
   ]);
 
 
