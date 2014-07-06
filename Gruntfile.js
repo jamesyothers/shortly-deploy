@@ -63,7 +63,8 @@ module.exports = function(grunt) {
         'public/client/*.js'
       ],
       options: {
-        force: 'true',
+        // with force 'true' will continue to run next grunt procesees if fails
+        // force: 'true',
         jshintrc: '.jshintrc',
         ignores: [
           // 'public/lib/**/*.js',
@@ -134,6 +135,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -145,7 +147,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('deploy', ['jshint', 'test', 'upload'
+  grunt.registerTask('deploy', ['jshint', 'test', 'concat', 'uglify', 'upload'
     // add your deploy tasks here
     // 'concat', 'uglify'
   ]);
